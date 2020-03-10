@@ -1,3 +1,4 @@
+
 import db
 import os
 
@@ -17,40 +18,39 @@ def menu():
     print("6->odejmij element")
 
 def utworz_element():
-    print("Podaj nazwe elementu:")
-    nazwa=input()
 
-    print("Podaj ilosc:")
-    ilosc=input()
+    nazwa=raw_input("Podaj nazwe elementu:")
 
-    print("Podaj koszt:")
-    koszt=input()
+    ilosc=int(raw_input("Podaj ilosc:"))
 
-    print("Opis elemantu:")
-    opis=input()
+    koszt=int(raw_input("Podaj koszt:"))
 
-    print("Podaj dostawce elementu:")
-    dostawca=input()
+    opis=raw_input("Opis elementu:")
 
-    print("Podaj czas dostawy:")
-    czas=input()
+    dostawca=raw_input("Podaj dostawce elementu:")
 
-    db.nowy_element(nazwa, ilosc, opis, koszt, dostawca, czas)
+    czas=int(raw_input("Podaj czas dostawy:"))
+
+    lista{}
+
+    
+    
+    db.new_element(nazwa, ilosc, opis, koszt, dostawca, czas, lista)
 
 def utworz_material():
-    nazwa=input("Podaj nazwe materialu:")
+    nazwa=raw_input("Podaj nazwe materialu:")
 
-    ilosc=input("Podaj ilosc:")
+    ilosc=int(raw_input("Podaj ilosc:"))
 
-    koszt=input("Podaj koszt:")
+    koszt=int(raw_input("Podaj koszt:"))
 
-    opis=input("Opis materialu:")
+    opis=raw_input("Opis materialu:")
 
-    dostawca=input("Podaj dostawce materialu:")
+    dostawca=raw_input("Podaj dostawce materialu:")
 
-    czas=input("Podaj czas dostawy:")
+    czas=int(raw_input("Podaj czas dostawy:"))
 
-    db.nowy_material(nazwa, ilosc, opis, koszt, dostawca, czas)
+    db.new_material(nazwa, ilosc, opis, koszt, dostawca, czas)
 
 
 if __name__ == "__main__":
