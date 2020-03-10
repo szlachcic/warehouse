@@ -25,7 +25,7 @@ def utworz_element():
 
     ilosc=int(raw_input("Podaj ilosc:"))
 
-    koszt=int(raw_input("Podaj koszt:"))
+    koszt=float(raw_input("Podaj koszt:"))
 
     opis=raw_input("Opis elementu:")
 
@@ -56,7 +56,7 @@ def utworz_material():
 
     ilosc=int(raw_input("Podaj ilosc:"))
 
-    koszt=int(raw_input("Podaj koszt:"))
+    koszt=float(raw_input("Podaj koszt:"))
 
     opis=raw_input("Opis materialu:")
 
