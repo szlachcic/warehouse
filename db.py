@@ -4,6 +4,7 @@ import random
 
 class DB():
 
+
     def __init__(self):
         self.client = MongoClient()
         self.client = MongoClient("192.168.1.105", 27017)
@@ -32,14 +33,20 @@ class DB():
         else:
             return id
 
-    def new_element(self, name, quantity, description, value, supplier, time, array):
+    def new_element(self, name, quantity, description, value, supplier, time):
         id = self.element_id() 
-        element = { "_id": id, "name": name, "quantity": quantity, "description": description, "value": value, "supplier": supplier, "time": time, "material_array": array }
+        element = { "_id": id, "name": name, "quantity": quantity, "description": description, "value": value, "supplier": supplier, "time": time}
         self.element.insert_one(element)
+
+    def add_material_to_element(self, element_id, material_id, quantity):
+        self.element.update(
+            { "_id": element_id },
+            { "$push": { "materials": { "code": material_id, "quantity": quantity } } }
+        )
 
     def new_material(self, name, quantity, description, value, supplier, time):
         id = self.material_id() 
-        material = { "_id": id, "name": name, "quantity": quantity, "description": description, "value": value, "supplier": supplier, "time": time }
+        material = { "_id": id, "name": name, "quantity": quantity, "description": description, "value": value, "supplier": supplier, "time": time}
         self.material.insert_one(material)
 
     def list_element(self):
