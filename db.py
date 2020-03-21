@@ -1,6 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 import random
+import pprint
 
 class DB():
 
@@ -20,18 +21,18 @@ class DB():
     def element_id(self):
         id = int(random.random()*100000)
         id = (id*10)+2
-        if self.element.find({"_id": id})== 0:
+        if self.element.find({"_id": id})==0 | id<100000:
             self.element_id()
         else:
-            return id
+            return str(id)
 
     def material_id(self):
         id = int(random.random()*100000)
         id = (id*10)+1
-        if self.material.find({"_id": id})== 0:
+        if self.material.find({"_id": id})==0 | id<100000:
             self.material_id()
         else:
-            return id
+            return str(id)
 
     def new_element(self, name, quantity, description, value, supplier, time):
         id = self.element_id() 
@@ -56,13 +57,17 @@ class DB():
         pass
     
     def add_element(self, id, qnt=1):
-        self.element.update({ "_id": id },{ "$inc": { "ilosc": qnt } })
+        self.element.update({ "_id": id },{ "$inc": { "quantity": qnt } })
 
-    def _element(self, qnt=1):
-        self.element.update({ "_id": id },{ "$inc": { "ilosc": -qnt } })
+    def sub_element(self, id, qnt=1):
+        self.element.update({ "_id": id },{ "$inc": { "quantity": -qnt } })
 
-    def add_material(self, qnt=1):
-        self.material.update({ "_id": id },{ "$inc": { "ilosc": qnt } })
+    def add_material(self, id, qnt=1):
+        self.material.update({ "_id": id },{ "$inc": { "quantity": qnt } })
 
-    def odejmij_material(self, qnt=1):
-        self.material.update({ "_id": id },{ "$inc": { "ilosc": -qnt } })
+    def sub_material(self, id, qnt=1):
+        self.material.update({ "_id": id },{ "$inc": { "quantity": -qnt } })
+
+    def show(self, id):
+        x= self.element.find_one({ "_id": id })
+        pprint.pprint(x)
