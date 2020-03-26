@@ -1,0 +1,71 @@
+{
+    "name": "DevKit",
+    "description": "Developer Kit",
+    "content": [
+        {
+            "tag": "Main electronics box",
+            "set": [
+                {
+                    "name": "Core2Ros",
+                    "id": "857422",
+                    "quantity": 1
+                },
+                {
+                    "name": "RaspberryPi",
+                    "id": "609592",
+                    "quantity": 1
+                },
+                {
+                    "name": "3D printed box",
+                    "id": "716662",
+                    "quantity": 1
+                },
+                {
+                    "name": "3D printed box cover",
+                    "id": "949922",
+                    "quantity": 1
+                },
+                {
+                    "name": "Step 1",
+                    "pack": "medium bag",
+                    "set":[
+                        {
+                            "name": "Camera glass set",
+                            "id": "507762",
+                            "quantity": 1
+                        },
+                        {
+                            "name": "Camera",
+                            "id": "280972",
+                            "quantity": 1
+                        },
+                        {
+                            "name": "Camera set/small parts",
+                            "pack": "small bag",
+                            "set": [
+                                {
+                                    "name": "Screw 2.2x6.5",
+                                    "id": "524952",
+                                    "quantity": 4
+                                },
+                                {
+                                    "name": "3D printed camera holder",
+                                    "id": "190062",
+                                    "quantity": 1
+                                }
+                            ]
+                        }
+
+                    ]
+                    
+                },
+                {
+                    "name": "Step 2",
+                    "pack": "medium bag"
+                }
+
+
+            ]
+        }
+    ]
+}
