@@ -1,4 +1,71 @@
 {
+    "_id": "632353",
+    "name": "Additional battery",
+    "description": "Additional battery",
+    "content": [
+        {
+            "name": "Battery metal plate",
+            "id": "187372",
+            "quantity": 1
+        },
+        {
+            "name": "3D printed battery cover",
+            "id": "398132",
+            "quantity": 1
+        },
+        {
+            "name": "Battery box",
+            "id": "226492",
+            "quantity": 1
+        },
+        {
+            "name": "Sponge",
+            "id": "107632",
+            "quantity": 3
+        },
+        {
+            "name": "Battery",
+            "id": "538722",
+            "quantity": 1
+        },
+        {
+            "name": "Mounting screw m5x10",
+            "id": "626492",
+            "quantity": 3
+        },
+        {
+            "name": "Plastic screw",
+            "id": "756202",
+            "quantity": 4
+        },
+        {
+            "name": "Imbus m4x16",
+            "id": "349322",
+            "quantity": 4
+        },
+        {
+            "name": "Button set",
+            "id": "317282",
+            "quantity": 1
+        },
+        {
+            "name": "Weipu 3-pin female socket ",
+            "id": "501312",
+            "quantity": 1
+        },
+        {
+            "name": "Torx m4x8",
+            "id": "652862",
+            "quantity": 2
+        },
+        {
+            "name": "Square nut m4",
+            "id": "169352",
+            "quantity": 2
+        }
+    ]
+}
+{
     "_id": "612693",
     "name": "DevKit",
     "description": "Developer Kit",
@@ -441,6 +508,65 @@
         {
             "name": "3D printed addons cover",
             "id": "670942",
+            "quantity": 1
+        }
+    ]
+}
+{
+    "_id": "324233",
+    "name": "Additional Husarion",
+    "description": "Additional Husarion",
+    "content": [
+        {
+            "name": "Core2Ros",
+            "id": "857422",
+            "quantity": 1
+        }
+    ]
+}
+{
+    "_id": "141423",
+    "name": "PhantomX Pincher set",
+    "description": "PhantomX Pincher Robotic Arm",
+    "content": [
+        {
+            "name": "PhantomX Pincher",
+            "id": "365062",
+            "quantity": 1
+        },
+        {
+            "name": "3D printed Pincher adapter",
+            "id": "356222",
+            "quantity": 1
+        },
+        {
+            "name": "Imbus m3x6",
+            "id": "559802",
+            "quantity": 8
+        },
+        {
+            "name": "Mounting screw m5x10",
+            "id": "626492",
+            "quantity": 2
+        },
+        {
+            "name": "Nut m5",
+            "id": "872302",
+            "quantity": 2
+        },
+        {
+            "name": "Dynamixel cable 150mm",
+            "id": "557902",
+            "quantity": 1
+        },
+        {
+            "name": "Mini USB adapter",
+            "id": "145522",
+            "quantity": 1
+        },
+        {
+            "name": "MEB + power 12V",
+            "id": "404662",
             "quantity": 1
         }
     ]

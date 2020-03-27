@@ -8,12 +8,13 @@ class DB():
 
     def __init__(self):
         self.client = MongoClient()
-        self.client = MongoClient("192.168.1.105", 27017)
+        self.client = MongoClient("192.168.1.100", 37111)
         self.db = self.client.warehouse
 
         self.material = self.db.material
         self.element = self.db.component
         self.order = self.db.order
+        self.product = self.db.product
 
     def __del__(self):
         pass

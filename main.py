@@ -11,7 +11,7 @@ def menu():
     print("Prosty UI:-)\n")
     
     # print("1->utworz material")
-    # print("2->utworz element")
+    print("2->utworz element")
     # print("3->dodaj material")
     print("4->dodaj element")
     # print("5->odejmij material")
@@ -115,9 +115,9 @@ if __name__ == "__main__":
         komenda=input()
 
         # if komenda == 1: utworz_material()
-        # elif komenda == 2: utworz_element()
+        if komenda == 2: utworz_element()
         # elif komenda == 3: dodaj_material()
-        if komenda == 4: dodaj_element()
+        elif komenda == 4: dodaj_element()
         # elif komenda == 5: odejmij_material()
         elif komenda == 6: odejmij_element()
         # elif komenda == 7: dodaj_material_do_elementu()

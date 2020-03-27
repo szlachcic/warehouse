@@ -1,0 +1,12 @@
+{
+    "_id": "324233",
+    "name": "Additional Husarion",
+    "description": "Additional Husarion",
+    "content": [
+        {
+            "name": "Core2Ros",
+            "id": "857422",
+            "quantity": 1
+        }
+    ]
+}
