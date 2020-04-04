@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 import db
 import os
+import sys
 
 
-db=db.DB()
+global db
 
 def menu():
-    clear = lambda: os.system('clear') #on Linux System
-    clear()
+    # clear = lambda: os.system('clear') #on Linux System
+    # clear()
     print("Prosty UI:-)\n")
     
-    # print("1->utworz material")
+    print("1->utworz material")
     print("2->utworz element")
-    # print("3->dodaj material")
+    print("3->dodaj material")
     print("4->dodaj element")
     # print("5->odejmij material")
     print("6->odejmij element")
-    # print("7->dodaj material do elementu")
+    print("7->dodaj material do elementu")
     print("8->pokaz zeskanowany przedmiot")
 
 
@@ -38,15 +39,15 @@ def utworz_element():
 
 def dodaj_material_do_elementu():
 
-    kod_elementu=int(raw_input("Podaj kod elementu:"))
+    kod_elementu=raw_input("Podaj kod elementu:")
 
     while(1==1):
         print("Czy chcesz dodac material? y/n")
         ans=raw_input()
         if ans=="n": break
         elif ans=="y":
-            kod_materialu=int(raw_input("Podaj kod materialu:"))
-            qnt=int(raw_input("Podaj ilosc:"))
+            kod_materialu=raw_input("Podaj kod materialu:")
+            qnt=float(raw_input("Podaj ilosc:"))
             db.add_material_to_element(kod_elementu, kod_materialu,  qnt)
 
 
@@ -101,7 +102,7 @@ def odejmij_element():
         db.show(kod)
 
 def pokaz():
-    print("Wpisanie q konczy odejmowanie elementow")
+    print("Wpisanie q konczy")
     while True:
         kod=raw_input("Wczytaj kod:")
         if kod =="q": break
@@ -109,18 +110,20 @@ def pokaz():
 
 if __name__ == "__main__":
 
+    db=db.DB()
     menu()
+
 
     while (True):
         komenda=input()
 
-        # if komenda == 1: utworz_material()
-        if komenda == 2: utworz_element()
+        if komenda == 1: utworz_material()
+        elif komenda == 2: utworz_element()
         # elif komenda == 3: dodaj_material()
         elif komenda == 4: dodaj_element()
         # elif komenda == 5: odejmij_material()
         elif komenda == 6: odejmij_element()
-        # elif komenda == 7: dodaj_material_do_elementu()
+        elif komenda == 7: dodaj_material_do_elementu()
         elif komenda == 8: pokaz()
 
         else: print("zla komenda")
