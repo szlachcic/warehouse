@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import pymongo
 from pymongo import MongoClient
 import random
@@ -97,6 +98,38 @@ class DB():
         except:
             print("Can not extend product's content list")
 
+    def check_collection(self, id):
+        code=int(id)
+
+        if code/100000!=0 and code%10==1: return 1
+        elif code/100000!=0 and code%10==2: return 2
+        elif code/100000!=0 and code%10==3: return 3
+        else: return 0
+
+        return 1
+
+    def add(self, id, quantity=1):
+        if self.check_collection(id)==1: self.add_material(id, quantity)
+        elif self.check_collection(id)==2: self.add_component(id, quantity)
+        else: return 0
+
+        return 1
+
+    def sub(self, id, quantity=1):
+        if self.check_collection(id)==1: self.sub_material(id, quantity)
+        elif self.check_collection(id)==2: self.sub_component(id, quantity)
+        else: return 0
+
+        return 1
+
+    def update_quantity(id, quantity):
+        if check_collection(id)==1: db.update_material(id, quantity)
+        elif check_collection(id)==2: db.update_component(id, quantity)
+        else: return 0
+
+        return 1
+
+    
     def add_component(self, id, qnt=1):
         try:
             self.component.update({ "_id": id },{ "$inc": { "quantity": qnt } })
@@ -121,10 +154,6 @@ class DB():
         except:
             print("Can not substract material")
 
-
-
-
-
     def add_product(self, id):
         try:
             tmp = self.product.find_one({"_id": id})
@@ -134,7 +163,19 @@ class DB():
         for x in tmp["content"]:
             self.add_component(x["id"], x["quantity"])
 
-    def sub_product(self, id):
+    def update_component(self, id, quantity):
+        try:
+            self.component.update({ "_id": id },{ "$set": { "quantity": quantity } })
+        except:
+            print("Can not update element quantity")
+
+    def update_material(self, id, quantity):
+        try:
+            self.material.update({ "_id": id },{ "$set": { "quantity": quantity } })
+        except:
+            print("Can not update material quantity")
+
+    def sub_product_sub_component(self, id):
         try:
             tmp = self.product.find_one({"_id": id})
         except:
@@ -143,18 +184,19 @@ class DB():
         for x in tmp["content"]:
             self.sub_component(x["id"], x["quantity"])
 
+    def add_component_sub_material(self, id, quantity=1):
+        try:
+            tmp = self.component.find_one({"_id": id})
+            self.add_component(id, quantity)
+        except:
+            print("Can not find in component list")
 
+        for x in tmp["materials"]:
+            self.sub_material(x["id"], x["quantity"]*quantity)
 
+    def show(self, id, all=False):
 
-
-
-
-    def show(self, id):
-        if id<100000:
-            print("Incorect id")
-            return 
-
-        grup = int(id)%10
+        grup=self.check_collection(id)
 
         if grup==1: 
             try:
@@ -165,10 +207,11 @@ class DB():
             print("\nColection: material")    
             print("ID: {}".format(tmp["_id"]))
             print("Name: {}".format(tmp["name"]))
+            # print("Description: {}".format(tmp["description"]))
             print("Quantity: {}".format(tmp["quantity"]))
-            print("Supplier: {}".format(tmp["supplier"]))
-            print("Value: {}".format(tmp["value"]))
-            print("Delivery time: {}".format(tmp["time"]))
+            # print("Supplier: {}".format(tmp["supplier"]))
+            # print("Value: {}".format(tmp["value"]))
+            # print("Delivery time: {}".format(tmp["time"]))
 
         elif grup==2: 
             try:
@@ -179,17 +222,21 @@ class DB():
             print("\nColection: component")    
             print("ID: {}".format(tmp["_id"]))
             print("Name: {}".format(tmp["name"]))
+            # print("Description: {}".format(tmp["description"]))
             print("Quantity: {}".format(tmp["quantity"]))
-            print("Supplier: {}".format(tmp["supplier"]))
-            print("Value: {}".format(tmp["value"]))
-            print("Delivery time: {}".format(tmp["time"]))
+            # print("Supplier: {}".format(tmp["supplier"]))
+            # print("Value: {}".format(tmp["value"]))
+            # print("Delivery time: {}".format(tmp["time"]))
 
-            for x in tmp["materials"]:
-                print("\nMaterial:")
-                print("ID: {}".format(x["id"]))
-                print("Name: {}".format(x["name"]))
-                print("Quantity: {}".format(x["quantity"]))
-        
+            if all==True:
+                try:
+                    for x in tmp["materials"]:
+                        print("\nMaterial:")
+                        print("ID: {}".format(x["id"]))
+                        print("Name: {}".format(x["name"]))
+                        print("Quantity: {}".format(x["quantity"]))
+                except: print ("No materials")
+            
         elif grup==3: 
             try:
                 tmp = self.component.find_one({"_id": id})
@@ -201,5 +248,13 @@ class DB():
             print("Product name: {}".format(tmp["name"]))
 
         else: 
-            print("Incorect id")
+            print("Incorrect id")
+
+    def erase_order(self):
+        self.order.remove({})
+
+        for x in self.element.find():
+            self.order.insert(x)
+        
+    # def update_order(self, id, quantity)
 
