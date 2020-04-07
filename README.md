@@ -1,4 +1,5 @@
 # warehouse
 
-Install python-xlsxwriter\n
-Install python-pymongo
+#Install python-xlsxwriter
+
+#Install python-pymongo
