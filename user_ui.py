@@ -3,6 +3,7 @@
 import db
 import os
 import sys
+import time
 
 global db
 
@@ -72,6 +73,7 @@ def add_component_sub_material():
         if quantity>1000: break
 
         db.add_component_sub_material(code, quantity)
+        time.sleep(1)
 
 
 def product_sub_component():
@@ -86,17 +88,20 @@ def product_sub_component():
         if db.show(code)!=3: continue
 
         db.sub_product_sub_component(code)
+        time.sleep(2)
 
 
 def show():
 
     while True:
-       
+        clean()
         print("Wpisanie q kończy wyświetlanie")
         code=raw_input("Wczytaj kod produktu:")
-        clean()
+        if code =="q": return 0
+
         print ("Wczytany produkt:")
         db.show(code, True)
+        time.sleep(2)
 
 if __name__ == "__main__":
 
@@ -105,7 +110,12 @@ if __name__ == "__main__":
 
 
     while (True):
-        komenda=input()
+        try:
+            komenda=int(raw_input())
+        except:
+            print("Podano błędną komendę")
+            continue
+
 
         if komenda == 1: add()
         elif komenda == 2: substract()

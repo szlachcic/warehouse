@@ -101,7 +101,7 @@ class DB():
 
     def check_collection(self, id):
         code=int(id)
-        if code>999995 and code<100000: return 0
+        if code>999995 or code<100000: return 0
         elif code%10==1: return 1
         elif code%10==2: return 2
         elif code%10==3: return 3
@@ -204,59 +204,62 @@ class DB():
         if grup==1: 
             try:
                 tmp = self.material.find_one({"_id": id})
+
+                print("\nColection: Material")    
+                print("ID: {}".format(tmp["_id"]))
+                print("Name: {}".format(tmp["name"]))
+                # print("Description: {}".format(tmp["description"]))
+                print("Quantity: {}".format(tmp["quantity"]))
+                # print("Supplier: {}".format(tmp["supplier"]))
+                # print("Value: {}".format(tmp["value"]))
+                # print("Delivery time: {}".format(tmp["time"]))
+                return 1
+
             except:
                 print("Can not find in material list")
                 return 0
 
-            print("\nColection: Material")    
-            print("ID: {}".format(tmp["_id"]))
-            print("Name: {}".format(tmp["name"]))
-            # print("Description: {}".format(tmp["description"]))
-            print("Quantity: {}".format(tmp["quantity"]))
-            # print("Supplier: {}".format(tmp["supplier"]))
-            # print("Value: {}".format(tmp["value"]))
-            # print("Delivery time: {}".format(tmp["time"]))
-
         elif grup==2: 
             try:
                 tmp = self.component.find_one({"_id": id})
+
+                print("\nColection: Component")    
+                print("ID: {}".format(tmp["_id"]))
+                print("Name: {}".format(tmp["name"]))
+                # print("Description: {}".format(tmp["description"]))
+                print("Quantity: {}".format(tmp["quantity"]))
+                # print("Supplier: {}".format(tmp["supplier"]))
+                # print("Value: {}".format(tmp["value"]))
+                # print("Delivery time: {}".format(tmp["time"]))
+
+                if all==True:
+                    try:
+                        for x in tmp["materials"]:
+                            print("\nMaterial:")
+                            print("ID: {}".format(x["id"]))
+                            print("Name: {}".format(x["name"]))
+                            print("Quantity: {}".format(x["quantity"]))
+                    except: 
+                        print ("No materials")
+                        return 0
+                    
+                return 2
+            
             except:
                 print("Can not find in component list")
                 return 0
 
-            print("\nColection: Component")    
-            print("ID: {}".format(tmp["_id"]))
-            print("Name: {}".format(tmp["name"]))
-            # print("Description: {}".format(tmp["description"]))
-            print("Quantity: {}".format(tmp["quantity"]))
-            # print("Supplier: {}".format(tmp["supplier"]))
-            # print("Value: {}".format(tmp["value"]))
-            # print("Delivery time: {}".format(tmp["time"]))
-
-            if all==True:
-                try:
-                    for x in tmp["materials"]:
-                        print("\nMaterial:")
-                        print("ID: {}".format(x["id"]))
-                        print("Name: {}".format(x["name"]))
-                        print("Quantity: {}".format(x["quantity"]))
-                except: 
-                    print ("No materials")
-
-            return 1
-
         elif grup==3: 
             try:
                 tmp = self.product.find_one({"_id": id})
+                print("\nColection: Product")    
+                print("Product ID: {}".format(tmp["_id"]))
+                print("Product name: {}".format(tmp["name"]))
+                return 3
+
             except:
                 print("Can not find in product list")
                 return 0
-
-            print("\nColection: Product")    
-            print("Product ID: {}".format(tmp["_id"]))
-            print("Product name: {}".format(tmp["name"]))
-
-            return 1
 
         else: 
             print("Incorrect ID")
