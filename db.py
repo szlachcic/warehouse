@@ -131,9 +131,9 @@ class DB():
 
         return 1
 
-    def update_quantity(id, quantity):
-        if check_collection(id)==1: db.update_material(id, quantity)
-        elif check_collection(id)==2: db.update_component(id, quantity)
+    def update_quantity(self, id, quantity):
+        if self.check_collection(id)==1: self.update_material(id, quantity)
+        elif self.check_collection(id)==2: self.update_component(id, quantity)
         else: return 0
 
         return 1

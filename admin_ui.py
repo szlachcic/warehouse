@@ -106,6 +106,7 @@ def create_product():
 def add_material_to_component():
     clean()
     element_code=raw_input("Podaj kod elementu:")
+    if code=='q': return
 
     if db.show(element_code)!=2:
         print("Brak elementu w bazie")
@@ -141,6 +142,7 @@ def add_material_to_component():
 def add_component_to_product():
     clean()
     product_code=raw_input("Podaj kod produktu:")
+    if code=='q': return
 
     if db.show(product_code)!=3:
         print("Brak elementu w bazie")
@@ -176,15 +178,22 @@ def add_component_to_product():
     return 1
 
 def update_quantity():
-    clean()
-    code=raw_input("Podaj kod elementu/materiału:")
-    if db.check_collection(code)!=1 or db.check_collection(code)!=2: 
-        print("Błędny kod")
-        time.sleep(1000)
-        return 0
+    while(1==1):
+        clean()
+        print("Wpisanie q przerywa dodawanie elementów do produktu\n")
+    
+        code=raw_input("Podaj kod elementu/materiału:")
+        if code=='q': break
+        elif db.show(code)==0:
+            print("Błędny kod elementu")
+            time.sleep(2)
+            continue
 
-    quantity=float(raw_input("Podaj aktualną ilość:"))
-    db.update_quantity(code, quantity)
+        quantity=float(raw_input("Podaj aktualną ilość:"))
+        db.update_quantity(code, quantity)
+        print("Aktualny element/materiał:")
+        db.show(code)
+
 
     return 1
 
@@ -240,10 +249,8 @@ if __name__ == "__main__":
         elif komenda == 3: create_product()
         elif komenda == 4: add_material_to_component()
         elif komenda == 5: add_component_to_product()
-        elif komenda == 4: update_quantity()
-        elif komenda == 5: create_order()
-
-
+        elif komenda == 6: update_quantity()
+        # elif komenda == 7: create_order()
         else: print("Błędną komendę")
 
         menu()
