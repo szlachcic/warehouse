@@ -13,12 +13,13 @@ def clean():
 
 def menu():
     clean()
-    print("Interfejs użytkownika\n")
+    print("Interfejs użytkownika")
+    print("CTRL + C - zamknij aplikację")
     
     print("1->dodaj")
     print("2->odejmij")
 
-    print("3->dodaj element i odejmin materiały")
+    print("3->dodaj element odejmując materiały")
     print("4->odejmij elementy dodane do produktu")
     
     print("5->pokaż zeskanowany przedmiot")
@@ -28,66 +29,64 @@ def add():
     while True:
         clean()
         print("Wpisanie q przerywa dodawanie")
-
         code=raw_input("Wczytaj kod:")
-        print ("Wczytany przedmiot:")
-        db.show(code)
-        quantity=float(raw_input("Podaj ilości do dodania:"))
-        if quantity>1000: break
+        if code =="q": break
 
-        if db.check_collection!=0:
-            db.add(code, quantity)
-        elif code =="q": break
-        else: print("Wczytano błędny kod")
+        print ("Wczytany przedmiot:")
+        if db.show(code)==0: continue
+
+        quantity=float(raw_input("Podaj ilości do dodania:"))
+        if quantity>1000: continue
+
+        db.add(code, quantity)
 
 def substract():
 
     while True:
         clean()
         print("Wpisanie q przerywa odejmowanie")
-
         code=raw_input("Wczytaj kod:")
-        print ("Wczytany przedmiot:")
-        db.show(code)
-        quantity=float(raw_input("Podaj ilości do odjęcia:"))
-        if quantity>1000: break
+        if code =="q": return 0
 
-        if db.check_collection!=0:
-            db.sub(code, quantity)
-        elif code =="q": break
-        else: print("Wczytano błędny kod")
+        print ("Wczytany przedmiot:")
+        if db.show(code)==0: continue
+
+        quantity=float(raw_input("Podaj ilości do odjęcia:"))
+        if quantity>1000: return 0
+    
+        db.sub(code, quantity)
+        
 
 def add_component_sub_material():
 
     while True:
         clean()
         print("Wpisanie q kończy dodawanie elementów do magazynu")
-
         code=raw_input("Wczytaj kod elementu:")
+        if code =="q": return 0
+
         print ("Wczytany element:")
-        db.show(code)
+        if db.show(code)!=2: continue
+
         quantity=float(raw_input("Podaj ilości elementów dodawanych:"))
         if quantity>1000: break
 
-        if db.check_collection!=0:
-            db.add_component_sub_material(code, quantity)
-        elif code =="q": break
-        else: print("Wczytano błędny kod")
+        db.add_component_sub_material(code, quantity)
+
 
 def product_sub_component():
 
     while True:
         clean()
         print("Wpisanie q kończy zdejmowanie zestawów elementów z magazynu")
-
         code=raw_input("Wczytaj kod produktu:")
-        print ("Wczytany produkt:")
-        db.show(code)
+        if code =="q": return 0
 
-        if db.check_collection!=0:
-            db.sub_product_sub_component(code)
-        elif code =="q": break
-        else: print("Wczytano błędny kod")
+        print ("Wczytany produkt:")
+        if db.show(code)!=3: continue
+
+        db.sub_product_sub_component(code)
+
 
 def show():
 

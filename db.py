@@ -19,8 +19,9 @@ class DB():
             self.component = self.db.component
             self.order = self.db.order
             self.product = self.db.product
-            print("sukces")
+            print("Connected to database")
         except pymongo.errors.ConnectionFailure as e:
+            print("Can not connect to database")
             sys.exit(e)
             return 0
    
@@ -100,13 +101,11 @@ class DB():
 
     def check_collection(self, id):
         code=int(id)
-
-        if code/100000!=0 and code%10==1: return 1
-        elif code/100000!=0 and code%10==2: return 2
-        elif code/100000!=0 and code%10==3: return 3
+        if code>999995 and code<100000: return 0
+        elif code%10==1: return 1
+        elif code%10==2: return 2
+        elif code%10==3: return 3
         else: return 0
-
-        return 1
 
     def add(self, id, quantity=1):
         if self.check_collection(id)==1: self.add_material(id, quantity)
@@ -190,9 +189,13 @@ class DB():
             self.add_component(id, quantity)
         except:
             print("Can not find in component list")
+            return 0
 
-        for x in tmp["materials"]:
-            self.sub_material(x["id"], x["quantity"]*quantity)
+        try:
+            for x in tmp["materials"]:
+                self.sub_material(x["id"], x["quantity"]*quantity)
+            return 1
+        except: return 1
 
     def show(self, id, all=False):
 
@@ -203,8 +206,9 @@ class DB():
                 tmp = self.material.find_one({"_id": id})
             except:
                 print("Can not find in material list")
+                return 0
 
-            print("\nColection: material")    
+            print("\nColection: Material")    
             print("ID: {}".format(tmp["_id"]))
             print("Name: {}".format(tmp["name"]))
             # print("Description: {}".format(tmp["description"]))
@@ -218,8 +222,9 @@ class DB():
                 tmp = self.component.find_one({"_id": id})
             except:
                 print("Can not find in component list")
+                return 0
 
-            print("\nColection: component")    
+            print("\nColection: Component")    
             print("ID: {}".format(tmp["_id"]))
             print("Name: {}".format(tmp["name"]))
             # print("Description: {}".format(tmp["description"]))
@@ -235,20 +240,27 @@ class DB():
                         print("ID: {}".format(x["id"]))
                         print("Name: {}".format(x["name"]))
                         print("Quantity: {}".format(x["quantity"]))
-                except: print ("No materials")
-            
+                except: 
+                    print ("No materials")
+
+            return 1
+
         elif grup==3: 
             try:
-                tmp = self.component.find_one({"_id": id})
+                tmp = self.product.find_one({"_id": id})
             except:
                 print("Can not find in product list")
+                return 0
 
-            print("\nColection: product")    
+            print("\nColection: Product")    
             print("Product ID: {}".format(tmp["_id"]))
             print("Product name: {}".format(tmp["name"]))
 
+            return 1
+
         else: 
-            print("Incorrect id")
+            print("Incorrect ID")
+            return 0
 
     def erase_order(self):
         self.order.remove({})
