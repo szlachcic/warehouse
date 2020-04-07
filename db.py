@@ -60,24 +60,30 @@ class DB():
         material = { "_id": id, "name": name, "quantity": quantity, "description": description, "value": value, "supplier": supplier, "time": time}
         try: 
             self.material.insert_one(material)
+            return 1
         except: 
             print("Can not inster material into collection")
+            return 0
 
     def new_component(self, name, quantity, description, value, supplier, time):
         id = self.component_id() 
         component = { "_id": id, "name": name, "quantity": quantity, "description": description, "value": value, "supplier": supplier, "time": time}
         try:
             self.component.insert_one(component)
+            return 1
         except:
             print("Can not inster component into collection")
+            return 0
 
     def new_product(self, name, description):
         id = self.product_id() 
         product = { "_id": id, "name": name, "description": description}
         try:
             self.product.insert_one(product)
+            return 1
         except: 
             print("Can not inster product into collection")
+            return 1
 
     def extend_component(self, component_id, material_id, quantity):
         tmp = self.material.find_one({"_id": material_id})
@@ -86,8 +92,10 @@ class DB():
                 { "_id": component_id },
                 { "$push": { "materials": { "id": material_id,"name": tmp["name"] ,"quantity": quantity } } }
             )
+            return 1
         except:
             print("Can not extend component's materials list")
+            return 0
 
     def extend_product(self, product_id, component_id, quantity):
         tmp = self.component.find_one({"_id": component_id})
@@ -96,8 +104,10 @@ class DB():
                 { "_id": product_id },
                 { "$push": { "content": { "id": component_id,"name": tmp["name"] ,"quantity": quantity } } }
             )
+            return 1
         except:
             print("Can not extend product's content list")
+            return 0
 
     def check_collection(self, id):
         code=int(id)

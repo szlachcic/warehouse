@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+#-*- coding: utf-8 -*-
 import db
 import os
 import sys
 import time
 import excel_sheet
 
-db=db.DB()
+global db
 
 def clean():
     clear = lambda: os.system('clear') #on Linux System
@@ -22,9 +23,9 @@ def menu():
     print("4->przypisz materiały do elementu")
     print("5->przypisz elementy do produktu")
 
-    print("8->korekcja stanów magazynu")
+    print("6->korekcja stanów magazynu")
 
-    print("6->przygotuj listę zakupów")
+    print("7->przygotuj listę zakupów")
     # print("7->przygotuj listę stanów magazynowych")
     
 
@@ -36,13 +37,23 @@ def create_material():
         value=float(raw_input("Podaj koszt:"))
         description=raw_input("Opis materialu:")
         supplier=raw_input("Podaj dostawce materialu:")
-        time=float(raw_input("Podaj czas dostawy:"))
-        db.new_material(nazwa, ilosc, opis, koszt, dostawca, czas)
+        delivery_time=float(raw_input("Podaj czas dostawy:"))
+        if db.new_material(name, quantity, description, value, supplier, delivery_time)==0: 
+            print("Nie udało się utworzyć materiału")
+            time.sleep(2)
+            return 0
 
         print("Utworzono nowy materiał")
+        tmp=db.material.find_one({"name": name})
+        tmp_id=tmp["_id"]
+        db.show(tmp_id)
+        time.sleep(5)
+        return 1
 
     except:
         print("Nie udało się utworzyć materiału")
+        time.sleep(2)
+        return 0
 
 def create_component():
     clean()
@@ -52,61 +63,96 @@ def create_component():
         value=float(raw_input("Podaj koszt:"))
         description=raw_input("Opis elementu:")
         supplier=raw_input("Podaj dostawce:")
-        time=float(raw_input("Podaj czas dostawy:"))
-        db.new_component(nazwa, ilosc, opis, koszt, dostawca, czas)
+        delivery_time=float(raw_input("Podaj czas dostawy:"))
+        if db.new_component(name, quantity, description, value, supplier, delivery_time)==0:
+            print("Nie udało się utworzyć elementu")
+            time.sleep(2)
+            return 0
 
-        print("Utworzono nowy element")
+        print("Utworzono nowy element:")
+        tmp=db.component.find_one({"name": name})
+        tmp_id=tmp["_id"]
+        db.show(tmp_id)
+        time.sleep(5)
+        return 1
 
     except:
         print("Nie udało się utworzyć elementu")
+        time.sleep(2)
+        return 0
 
 def create_product():
     clean()
     try:
         name=raw_input("Podaj nazwe produktu:")
         description=raw_input("Opis produktu:")
-        db.new_product(nazwa,opis)
+        if db.new_product(name,description)==0:
+            print("Nie udało się utworzyć produkt")
+            time.sleep(2)
+            return 0
 
         print("Utworzono nowy produkt")
+        tmp=db.product.find_one({"name": name})
+        tmp_id=tmp["_id"]
+        db.show(tmp_id)
+        time.sleep(5)
+        return 1
 
     except:
         print("Nie udało się utworzyć produkt")
-
-def add_material_to_component();
-    clean()
-    element_code=raw_input("Podaj kod elementu:")
-    if db.check_collection(element_code)!=2: 
-        print("Błędny kod")
-        time.sleep(1000)
+        time.sleep(2)
         return 0
 
-    tmp = db.element.find_one({"_id": element_code})
+def add_material_to_component():
+    clean()
+    element_code=raw_input("Podaj kod elementu:")
+
+    if db.show(element_code)!=2:
+        print("Brak elementu w bazie")
+        time.sleep()
+        return 0
+
+    try:
+        tmp = db.component.find_one({"_id": element_code})
+    except: 
+        print("Brak elementu w bazie")
+        return 0
 
     while(1==1):
         clean()
-        print("Wpisanie q przerywa dodawanie materiałow do elementu\n")
+        print("Wpisanie q kończy dodawanie materiałow do elementu\n")
         print("Dodawanie materiału do elementu: {}".format(tmp["name"]))
     
         code=raw_input("Podaj kod materialu:")
-        if code=='q': break()
-
-        if db.check_collection(code)!=1 : 
-            print("Błędny kod")
-            time.sleep(1000)
+        if code=='q': break
+        elif db.show(code)!=1:
+            print("Błędny kod materiału")
+            time.sleep(2)
             continue
 
-        quantity=float(raw_input("Podaj ilosc materiału:"))
-        db.extend_component(element_code, code,  qnt)
+        quantity=float(raw_input("Podaj ilosc materiału do dodania do elementu:"))
+        if db.extend_component(element_code, code,  quantity)==0:
+            print("Nie udało się dodać materiału")
+            continue
+        else: 
+            print("Udało się dodać materiał do elementu")
+    return 1
 
-def add_component_to_product();
+def add_component_to_product():
     clean()
     product_code=raw_input("Podaj kod produktu:")
-    if db.check_collection(element_code)!=3: 
-        print("Błędny kod")
-        time.sleep(1000)
+
+    if db.show(product_code)!=3:
+        print("Brak elementu w bazie")
+        time.sleep(2)
         return 0
 
-    tmp = db.product.find_one({"_id": product_code})
+    try:
+        tmp = db.product.find_one({"_id": product_code})
+    except: 
+        print("Brak elementu w bazie")
+        time.sleep(2)
+        return 0
 
     while(1==1):
         clean()
@@ -114,20 +160,25 @@ def add_component_to_product();
         print("Dodawanie elementu do produktu: {}".format(tmp["name"]))
     
         code=raw_input("Podaj kod elementu:")
-        if code=='q': break()
-
-        if db.check_collection(code)!=2 : 
-            print("Błędny kod")
-            time.sleep(1000)
+        if code=='q': break
+        elif db.show(code)!=2:
+            print("Błędny kod elementu")
+            time.sleep(2)
             continue
 
         quantity=float(raw_input("Podaj ilość elementów:"))
-        db.extend_product(product_code, code,  quantity)
+        if db.extend_product(product_code, code,  quantity)==0:
+            print("Nie udało się dodać elelemtu")
+            continue
+        else: 
+            print("Udało się dodać element do produktu")
+
+    return 1
 
 def update_quantity():
     clean()
     code=raw_input("Podaj kod elementu/materiału:")
-    if db.check_collection(code)!=1 || db.check_collection(code)!=2: 
+    if db.check_collection(code)!=1 or db.check_collection(code)!=2: 
         print("Błędny kod")
         time.sleep(1000)
         return 0
