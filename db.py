@@ -278,8 +278,17 @@ class DB():
     def erase_order(self):
         self.order.remove({})
 
-        for x in self.element.find():
-            self.order.insert(x)
+        for x in self.component.find():
+            if x["supplier"]!= "Kell ideas": 
+                self.order.insert(x)
+            else:
+                for y in x["materials"]:
+                    tmp = self.material.find_one({"_id": y["id"]})
+                    if self.order.count_documents({"_id": tmp["_id"]}, limit=1) !=0:
+                        continue
+                    else:
+                        self.order.insert(tmp)
+
         
     # def update_order(self, id, quantity)
 

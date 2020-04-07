@@ -5,7 +5,9 @@ class Sheet():
 
     def __init__(self, name, description):
 
-        self.workbook = xlsxwriter.Workbook('name.xlsx')
+        self.file = xlsxwriter.Workbook('{}.xlsx'.format(name))
+        self.worksheet = self.file.add_worksheet()
+
         self.worksheet.write('A1', name) 
         self.worksheet.write('B1', description) 
 
@@ -16,20 +18,22 @@ class Sheet():
         self.worksheet.write('E2' , 'value') 
         self.worksheet.write('F2' , 'supplier') 
         self.worksheet.write('G2' , 'status') 
+        self.worksheet.write('H2' , 'link')
 
         self.line=3
 
     def __del__(self):
-        self.workbook.close() 
+        self.file.close() 
 
-    def update(id, name, description, quantity, valu, supplier, link):
+    def update(self, id, name, description, quantity, value, supplier, link="brak"):
         self.worksheet.write('A{}'.format(self.line) , id) 
         self.worksheet.write('B{}'.format(self.line) , name) 
         self.worksheet.write('C{}'.format(self.line) , description) 
         self.worksheet.write('D{}'.format(self.line) , quantity)     
         self.worksheet.write('E{}'.format(self.line) , value) 
-        self.worksheet.write('F{}'.format(self.line) , status) 
-        # self.worksheet.write('G{}'.format(self.line) , 'Geeks')  
+        self.worksheet.write('F{}'.format(self.line) , supplier) 
+        self.worksheet.write('H{}'.format(self.line) , link) 
+         
 
         self.line+=1 
          

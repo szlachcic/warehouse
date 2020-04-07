@@ -215,18 +215,28 @@ def create_order():
             code=raw_input("Podaj kod produktu:")
             qnt=int(raw_input("Podaj ilość:"))
 
-            content = db.product.find_one({"_id": kod})["content"]
+            content = db.product.find_one({"_id": code})["content"]
 
             for x in content:
-                code = x["id"]
-                quantity = x["quantity"]*qnt
-                db.order.update({ "_id": code },{ "$inc": { "quantity": -quantity } })
+                tmp = db.component.find_one({"_id":x["id"]})
+
+                if tmp["supplier"]=="Kell ideas":
+                    for y in tmp["materials"]:
+                        code = y["id"]
+                        quantity = y["quantity"]*qnt
+                        db.order.update({ "_id": code },{ "$inc": { "quantity": -quantity } })
+
+                else:
+                    code = x["id"]
+                    quantity = x["quantity"]*qnt
+                    db.order.update({ "_id": code },{ "$inc": { "quantity": -quantity } })
 
     for y in db.order.find():
-        if y["supplier"]=="Kell ideas": 
-            for z in y["materials"]:
-                sheet.update(z["id"], z["name"], z["description"], z["quantity"], z["value"], z["supplier"], z["link"])
-        else: sheet.update(y["id"], y["name"], y["description"], y["quantity"], y["value"], y["supplier"], y["link"])
+        # if y["supplier"]=="Kell ideas": 
+        #     for z in y["materials"]:
+        #         tmp=db.material.find_one({"_id": z["id"]})
+        #         sheet.update(tmp["_id"], tmp["name"], tmp["description"], tmp["quantity"], tmp["value"], tmp["supplier"], tmp["link"])
+        sheet.update(y["_id"], y["name"], y["description"], y["quantity"], y["value"], y["supplier"], y["link"])
 
     del sheet
 
@@ -250,7 +260,7 @@ if __name__ == "__main__":
         elif komenda == 4: add_material_to_component()
         elif komenda == 5: add_component_to_product()
         elif komenda == 6: update_quantity()
-        # elif komenda == 7: create_order()
+        elif komenda == 7: create_order()
         else: print("Błędną komendę")
 
         menu()
