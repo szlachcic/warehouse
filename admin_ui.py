@@ -106,7 +106,7 @@ def create_product():
 def add_material_to_component():
     clean()
     element_code=raw_input("Podaj kod elementu:")
-    if code=='q': return
+    if element_code=='q': return
 
     if db.show(element_code)!=2:
         print("Brak elementu w bazie")
@@ -142,7 +142,7 @@ def add_material_to_component():
 def add_component_to_product():
     clean()
     product_code=raw_input("Podaj kod produktu:")
-    if code=='q': return
+    if product_code=='q': return
 
     if db.show(product_code)!=3:
         print("Brak elementu w bazie")
@@ -202,7 +202,6 @@ def create_order():
     clean()
     name=raw_input("Podaj nazwę zamówienia:")
     description=raw_input("Podaj opis zamówienia:")
-
     sheet=excel_sheet.Sheet(name, description)
 
     db.erase_order()
@@ -213,7 +212,7 @@ def create_order():
         if ans=="n": break
         elif ans=="y":
             code=raw_input("Podaj kod produktu:")
-            qnt=int(raw_input("Podaj ilość:"))
+            qnt=float(raw_input("Podaj ilość:"))
 
             content = db.product.find_one({"_id": code})["content"]
 
@@ -223,13 +222,14 @@ def create_order():
                 if tmp["supplier"]=="Kell ideas":
                     for y in tmp["materials"]:
                         code = y["id"]
-                        quantity = y["quantity"]*qnt
-                        db.order.update({ "_id": code },{ "$inc": { "quantity": -quantity } })
-
+                        number = qnt*y["quantity"]*x["quantity"]
+                        print number
+                        db.order.update({ "_id": code },{ "$inc": { "quantity": -number } })
+                        print db.order.find_one({"_id": code})
                 else:
                     code = x["id"]
-                    quantity = x["quantity"]*qnt
-                    db.order.update({ "_id": code },{ "$inc": { "quantity": -quantity } })
+                    number = qnt*x["quantity"]
+                    db.order.update({ "_id": code },{ "$inc": { "quantity": -number } })
 
     for y in db.order.find():
         # if y["supplier"]=="Kell ideas": 
